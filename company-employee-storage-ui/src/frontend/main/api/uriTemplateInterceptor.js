@@ -1,5 +1,4 @@
-
-define(function(require) {
+define(function (require) {
     'use strict';
 
     const interceptor = require('rest/interceptor');

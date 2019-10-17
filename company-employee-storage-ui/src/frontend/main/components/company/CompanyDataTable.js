@@ -1,19 +1,21 @@
-import React, { Component } from 'react'
-import { Table, Button } from 'reactstrap';
+import React, {Component} from 'react'
+import {Button} from 'reactstrap';
 import CompanyModalForm from './CompanyModalForm'
+import CompanyAverageSalary from './CompanyAverageSalary'
 
 class CompanyDataTable extends Component {
 
     deleteCompany = id => {
-        let confirmDelete = window.confirm('Delete company forever?')
-        if(confirmDelete){
+        let confirmDelete = window.confirm('Delete company forever? (Employee records that belong to company will be deleted too!)')
+        if (confirmDelete) {
             fetch('../api/v1/company', {
                 method: 'delete',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    id
+                    id:id,
+                    name:''
                 })
             })
                 .then(response => response.json())
@@ -25,38 +27,37 @@ class CompanyDataTable extends Component {
 
     }
 
+
+
     render() {
 
         const companies = this.props.companies.map(company => {
             return (
-                <tr key={company.id}>
-                    <th scope="row">{company.id}</th>
-                    <td>{company.name}</td>
+                <div className="card" key={company.id}  onClick={() => this.props.employeeChangeState(company.id)}>
+                    <div className="card-body">
+                        <h5 className="card-title">{company.name}</h5>
+                        <CompanyAverageSalary companyID={company.id} calculateAvgSalary={this.props.calculateAvgSalary}/>
+                        <div className="row">
+                            <div className="col-xs-6">
+                                <CompanyModalForm buttonLabel="Edit" company={company}
+                                                  updateCompanyState={this.props.updateCompanyState}/></div>
+                                {' '}
 
-                    <td>
-                        <div style={{width:"110px"}}>
-                            <CompanyModalForm buttonLabel="Edit" company={company} updateState={this.props.updateState}/>
-                            {' '}
-                            <Button color="danger" onClick={() => this.deleteCompany(company.id)}>Del</Button>
+                            <div className="col-xs-6">
+                                <Button color="danger" onClick={() => this.deleteCompany(company.id)}>Del</Button>
+                            </div>
                         </div>
-                    </td>
-                </tr>
+                    </div>
+                </div>
             )
         })
 
         return (
-            <Table responsive hover>
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
 
-                </tr>
-                </thead>
-                <tbody>
+            <div>
                 {companies}
-                </tbody>
-            </Table>
+            </div>
+
         )
     }
 }

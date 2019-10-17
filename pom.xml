@@ -36,11 +36,6 @@
                 <artifactId>company-employee-storage-ui</artifactId>
                 <version>${project.version}</version>
             </dependency>
-            <dependency>
-                <groupId>com.ebf.storage</groupId>
-                <artifactId>company-employee-storage-api</artifactId>
-                <version>${project.version}</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
     <build>

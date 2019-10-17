@@ -12,6 +12,8 @@ import com.ebf.storage.api.model.Employee;
 @Repository
 public interface EmployeeRepository extends CrudRepository<Employee, Long> {
 
+    List<Employee> findAll();
+
     List<Employee> findByCompany(Company company);
 
     @Query(value = "SELECT AVG(salary) FROM Employee WHERE company_id = ?1")

@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
 import {Button, Modal, ModalBody, ModalHeader} from 'reactstrap'
-import AddEditForm from './CompanyFormAddEdit'
+import EmployeeFormAddEdit from './EmployeeFormAddEdit'
 
-class CompanyModalForm extends Component {
+class EmployeeModalForm extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -30,14 +30,14 @@ class CompanyModalForm extends Component {
                 onClick={this.toggle}
                 style={{float: "left", marginRight: "10px"}}>{label}
             </Button>
-            title = 'Edit Company'
+            title = 'Edit Employee'
         } else {
             button = <Button
                 color="success"
                 onClick={this.toggle}
                 style={{float: "left", marginRight: "10px"}}>{label}
             </Button>
-            title = 'Add New Company'
+            title = 'Add New Employee'
         }
 
 
@@ -47,11 +47,12 @@ class CompanyModalForm extends Component {
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                     <ModalHeader toggle={this.toggle} close={closeBtn}>{title}</ModalHeader>
                     <ModalBody>
-                        <AddEditForm
-                            addCompanyToState={this.props.addCompanyToState}
-                            updateCompanyState={this.props.updateCompanyState}
+                        <EmployeeFormAddEdit
+                            addEmployeeToState={this.props.addEmployeeToState}
+                            updateEmployeeState={this.props.updateEmployeeState}
+                            company={this.props.company}
                             toggle={this.toggle}
-                            company={this.props.company}/>
+                            employee={this.props.employee}/>
                     </ModalBody>
                 </Modal>
             </div>
@@ -59,4 +60,4 @@ class CompanyModalForm extends Component {
     }
 }
 
-export default CompanyModalForm
+export default EmployeeModalForm

@@ -1,6 +1,5 @@
 package com.ebf.storage.api.controller;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -10,9 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.ebf.storage.api.model.Company;
+
 import com.ebf.storage.api.model.Employee;
-import com.ebf.storage.api.repository.CompanyRepository;
 import com.ebf.storage.api.repository.EmployeeRepository;
 
 @RequestMapping("api/v1")
@@ -23,59 +21,39 @@ public class EmployeeRestController {
     @Autowired
     private EmployeeRepository employeeRepository;
 
-    @Autowired
-    private CompanyRepository companyRepository;
-
-    @RequestMapping(value = "/company/{id}/employees", method = RequestMethod.GET)
+    @RequestMapping(value = "/employee/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public List<Employee> getEmployeesForCompany(@PathVariable("id") Long id) {
-        try {
-            Company company = getCompany(id);
-            return this.employeeRepository.findByCompany(company);
-        } catch (Exception ex) {
-            logger.error("getEmployeesForCompany error" + ex.getMessage());
-            return Collections.emptyList();
-        }
-    }
-
-    @RequestMapping(value = "/company/{id}/salary/avg", method = RequestMethod.GET)
-    @ResponseBody
-    public Double getAvgSalaryForCompany(@PathVariable("id") Long id) {
-        try {
-            Company company = getCompany(id);
-            return this.employeeRepository.getAverageSalaryByCompany(company);
-        } catch (Exception ex) {
-            logger.error("getAvgSalaryForCompany error" + ex.getMessage());
-            return 0.0;
-        }
-    }
-
-    @RequestMapping(value = "/company/{id}", method = RequestMethod.GET)
-    @ResponseBody
-    public Company getCompany(@PathVariable("id") Long id) {
-        Optional<Company> company = this.companyRepository.findById(id);
+    public Employee getCompany(@PathVariable("id") Long id) {
+        Optional<Employee> company = this.employeeRepository.findById(id);
         return company.orElseThrow(NoSuchElementException::new);
     }
 
-    @RequestMapping(value = "/company", method = RequestMethod.POST)
+    @RequestMapping(value = "/employee", method = RequestMethod.POST)
     @ResponseBody
-    public Company saveCompany(@RequestParam Object name) {
-        Company company=new Company("a");
-        this.companyRepository.save(company);
-        return company;
+    public Employee saveCompany(@RequestBody Employee employee) {
+        Employee newEmployee= new Employee(employee.getName(),employee.getSurname(),employee.getEmail(),employee.getAddress(),employee.getSalary(),employee.getCompany());
+        this.employeeRepository.save(newEmployee);
+        return newEmployee;
     }
 
-    @RequestMapping(value = "/company", method = RequestMethod.PUT)
+    @RequestMapping(value = "/employee", method = RequestMethod.PUT)
     @ResponseBody
-    public Company update(Company company) {
-        this.companyRepository.save(company);
-        return company;
+    public Employee updateCompany(@RequestBody Employee employee) {
+        this.employeeRepository.save(employee);
+        return employee;
     }
 
 
-    @RequestMapping(value = "/company", method = RequestMethod.GET)
+    @RequestMapping(value = "/employee", method = RequestMethod.GET)
     @ResponseBody
-    public List<Company> getCompanies() {
-        return this.companyRepository.findAll();
+    public List<Employee> getCompanies() {
+        return this.employeeRepository.findAll();
+    }
+
+    @RequestMapping(value = "/employee", method = RequestMethod.DELETE)
+    @ResponseBody
+    public Long deleteEmployee(@RequestBody Employee employee) {
+        this.employeeRepository.delete(employee);
+        return employee.getId();
     }
 }

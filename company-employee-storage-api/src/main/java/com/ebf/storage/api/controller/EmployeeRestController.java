@@ -26,7 +26,7 @@ public class EmployeeRestController {
     @Autowired
     private CompanyRepository companyRepository;
 
-    @RequestMapping(value = "/companies/{id}/employees", method = RequestMethod.GET)
+    @RequestMapping(value = "/company/{id}/employees", method = RequestMethod.GET)
     @ResponseBody
     public List<Employee> getEmployeesForCompany(@PathVariable("id") Long id) {
         try {
@@ -38,7 +38,7 @@ public class EmployeeRestController {
         }
     }
 
-    @RequestMapping(value = "/companies/{id}/salary/avg", method = RequestMethod.GET)
+    @RequestMapping(value = "/company/{id}/salary/avg", method = RequestMethod.GET)
     @ResponseBody
     public Double getAvgSalaryForCompany(@PathVariable("id") Long id) {
         try {
@@ -50,14 +50,30 @@ public class EmployeeRestController {
         }
     }
 
-    @RequestMapping(value = "/companies/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/company/{id}", method = RequestMethod.GET)
     @ResponseBody
     public Company getCompany(@PathVariable("id") Long id) {
         Optional<Company> company = this.companyRepository.findById(id);
         return company.orElseThrow(NoSuchElementException::new);
     }
 
-    @RequestMapping(value = "/companies", method = RequestMethod.GET)
+    @RequestMapping(value = "/company", method = RequestMethod.POST)
+    @ResponseBody
+    public Company saveCompany(@RequestParam Object name) {
+        Company company=new Company("a");
+        this.companyRepository.save(company);
+        return company;
+    }
+
+    @RequestMapping(value = "/company", method = RequestMethod.PUT)
+    @ResponseBody
+    public Company update(Company company) {
+        this.companyRepository.save(company);
+        return company;
+    }
+
+
+    @RequestMapping(value = "/company", method = RequestMethod.GET)
     @ResponseBody
     public List<Company> getCompanies() {
         return this.companyRepository.findAll();

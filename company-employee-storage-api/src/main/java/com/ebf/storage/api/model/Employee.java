@@ -11,10 +11,10 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Name is mandatory!")
+    @NotBlank(message = "Name is mandatory")
     private String name;
 
-    @NotBlank(message = "Surname is mandatory!")
+    @NotBlank(message = "Surname is mandatory")
     private String surname;
 
     private String email;

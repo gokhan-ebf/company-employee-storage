@@ -1,7 +1,4 @@
 import EmployeeModalForm from "./components/employee/EmployeeModalForm";
-
-const ReactDOM = require('react-dom');
-
 import React from 'react'
 import {Container} from 'reactstrap'
 import CompanyModalForm from './components/company/CompanyModalForm'
@@ -9,6 +6,8 @@ import CompanyDataTable from './components/company/CompanyDataTable'
 import EmployeeDataTable from "./components/employee/EmployeeDataTable";
 import {CSVLink} from "react-csv"
 import 'bootstrap/dist/css/bootstrap.min.css';
+
+const ReactDOM = require('react-dom');
 
 class App extends React.Component {
 
@@ -24,11 +23,11 @@ class App extends React.Component {
     getCompanies() {
         fetch('../api/v1/company')
             .then(response => response.json())
-            .then(companies => this.setState({companies:companies}))
+            .then(companies => this.setState({companies: companies}))
             .catch(err => console.log(err))
     }
 
-    getEmployees =(currentCompanyID) => {
+    getEmployees = (currentCompanyID) => {
         const encodedIDValue = encodeURIComponent(currentCompanyID);
         fetch(`../api/v1/company/${encodedIDValue}/employees`, {
             method: 'get',
@@ -39,7 +38,7 @@ class App extends React.Component {
             .then(response => response.json())
             .then((responseData) => {
                 this.setState({employees: responseData})
-                this.setState({currentCompanyID:currentCompanyID})
+                this.setState({currentCompanyID: currentCompanyID})
                 return responseData;
             })
             .catch(err => console.log(err))
@@ -75,8 +74,8 @@ class App extends React.Component {
     deleteCompanyFromState = (id) => {
         const updatedCompanies = this.state.companies.filter(company => company.id !== id)
         this.setState({companies: updatedCompanies})
-        this.setState({employees:[]})
-        this.setState({currentCompanyID:0})
+        this.setState({employees: []})
+        this.setState({currentCompanyID: 0})
     }
 
     deleteEmployeeFromState = (id) => {
@@ -97,8 +96,8 @@ class App extends React.Component {
         this.setState({employees: newArray})
     }
 
-    employeeChangeState = (id) =>{
-        this.setState({employees:[]})
+    employeeChangeState = (id) => {
+        this.setState({employees: []})
         this.getEmployees(id)
 
     }
@@ -112,35 +111,52 @@ class App extends React.Component {
                             <div className="nav flex-sm-column flex-row w-100">
                                 <div className="menu-item">
                                     <CSVLink
-                                        filename={"db.csv"}
+                                        filename={"company.csv"}
                                         color="primary"
                                         style={{float: "left", marginRight: "10px"}}
                                         className="btn btn-primary"
                                         data={this.state.companies}>
-                                        Download CSV
+                                        Download Company Data
                                     </CSVLink>
                                 </div>
                                 <div className="menu-item">
                                     <CompanyModalForm buttonLabel="Add Company"
                                                       addCompanyToState={this.addCompanyToState}/>
                                 </div>
-                                <CompanyDataTable companies={this.state.companies} updateCompanyState={this.updateCompanyState} calculateAvgSalary={this.calculateAvgSalary}
-                                                  deleteCompanyFromState={this.deleteCompanyFromState} employeeChangeState={this.employeeChangeState} employees={this.state.employees}/>
+                                <CompanyDataTable companies={this.state.companies}
+                                                  updateCompanyState={this.updateCompanyState}
+                                                  calculateAvgSalary={this.calculateAvgSalary}
+                                                  deleteCompanyFromState={this.deleteCompanyFromState}
+                                                  employeeChangeState={this.employeeChangeState}
+                                                  employees={this.state.employees}/>
                             </div>
 
                         </nav>
                     </div>
                     <div className="col py-2">
-                        { this.state.currentCompanyID > 0  &&
+                        {this.state.currentCompanyID > 0 &&
                         <div>
                             <h2>Employees</h2>
-                            <div className="row align-content-end">
-
-                                <EmployeeModalForm buttonLabel="Add Employee"
-                                                   addEmployeeToState={this.addEmployeeToState} company={{id:this.state.currentCompanyID,name:''}}/>
+                            <div className="float-right">
+                                <div className="row">
+                                    <EmployeeModalForm buttonLabel="Add Employee"
+                                                       addEmployeeToState={this.addEmployeeToState}
+                                                       company={{id: this.state.currentCompanyID, name: ''}}/>
+                                    <CSVLink
+                                        filename={"employee.csv"}
+                                        color="primary"
+                                        style={{float: "right", marginRight: "10px"}}
+                                        className="btn btn-primary"
+                                        data={this.state.employees}>
+                                        Download Employee Data
+                                    </CSVLink>
+                                </div>
                             </div>
-                            <EmployeeDataTable employees={this.state.employees} updateEmployeeState={this.updateEmployeeState}
-                                              deleteEmployeeFromState={this.deleteEmployeeFromState} currentCompanyID={this.state.currentCompanyID}  addEmployeeToState={this.addEmployeeToState}/>
+                            <EmployeeDataTable employees={this.state.employees}
+                                               updateEmployeeState={this.updateEmployeeState}
+                                               deleteEmployeeFromState={this.deleteEmployeeFromState}
+                                               currentCompanyID={this.state.currentCompanyID}
+                                               addEmployeeToState={this.addEmployeeToState}/>
                         </div>
                         }
                     </div>

@@ -1,0 +1,45 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+  creationTimestamp: "2019-10-18T11:41:44Z"
+  generation: 2
+  labels:
+    app: company-employee-storage-web
+  name: company-employee-storage-web
+  namespace: default
+  resourceVersion: "2461"
+  selfLink: /apis/extensions/v1beta1/namespaces/default/deployments/company-employee-storage-web
+  uid: 4294ade1-f19c-11e9-b894-42010a8000bc
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 2
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: company-employee-storage-web
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: company-employee-storage-web
+    spec:
+      containers:
+      - image: gcr.io/ebf-company-employee/company-employee-storage
+        imagePullPolicy: Always
+        name: company-employee-storage
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+

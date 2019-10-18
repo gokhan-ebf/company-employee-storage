@@ -1,4 +1,4 @@
-package com.ebf.storage.api.controller;
+package com.ebf.storage.api.controller.controller;
 
 import java.util.List;
 import java.util.NoSuchElementException;

@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: "2019-10-18T11:42:39Z"
+  labels:
+    app: company-employee-storage-web
+  name: company-employee-storage-web
+  namespace: default
+  resourceVersion: "2531"
+  selfLink: /api/v1/namespaces/default/services/company-employee-storage-web
+  uid: 635c1935-f19c-11e9-b894-42010a8000bc
+spec:
+  clusterIP: 10.55.246.21
+  externalTrafficPolicy: Cluster
+  ports:
+  - nodePort: 30752
+    port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: company-employee-storage-web
+  sessionAffinity: None
+  type: LoadBalancer
+status:
+  loadBalancer:
+    ingress:
+    - ip: 34.68.163.44
